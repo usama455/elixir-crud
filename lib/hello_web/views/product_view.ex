@@ -10,4 +10,11 @@ defmodule HelloWeb.ProductView do
 
     multiple_select(f, :category_ids, category_opts)
   end
+
+  def render("index.json", %{products: products}) do
+    %{data: Enum.map(products, fn product -> %{title: product.title , description: product.description, price: product.price, views: product.views} end)}
+  end
+  def render("new.json", %{response: response}) do
+    %{data: response}
+  end
 end

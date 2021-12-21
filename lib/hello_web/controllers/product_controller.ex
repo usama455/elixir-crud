@@ -6,7 +6,7 @@ defmodule HelloWeb.ProductController do
 
   def index(conn, _params) do
     products = Catalog.list_products()
-    render(conn, "index.html", products: products)
+    render(conn, "index.json", products: products)
   end
 
   def new(conn, _params) do
@@ -14,15 +14,16 @@ defmodule HelloWeb.ProductController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"product" => product_params}) do
-    case Catalog.create_product(product_params) do
+  def create(conn, params) do
+    case Catalog.create_product(params) do
       {:ok, product} ->
-        conn
-        |> put_flash(:info, "Product created successfully.")
-        |> redirect(to: Routes.product_path(conn, :show, product))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.json", response: params)
+#        conn
+#        |> put_flash(:info, "Product created successfully.")
+#        |> redirect(to: Routes.product_path(conn, :show, product))
+#
+      {:error,_error} ->
+        render(conn, "new.json", response: "Something Went wrong")
     end
   end
 

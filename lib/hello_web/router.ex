@@ -42,7 +42,7 @@ defmodule HelloWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/products", ProductController
+#    resources "/products", ProductController
     resources "/cart_items", CartItemController, only: [:create, :delete]
     resources "/orders", OrderController, only: [:create, :show]
     get "/cart", CartController, :show
@@ -51,11 +51,17 @@ defmodule HelloWeb.Router do
     get "/hello/:messenger", HelloController, :show
   end
 
+  scope "/api", HelloWeb do
+    pipe_through :api
+#    get "/", PageController, :index
+    resources "/products", ProductController
+  end
+
 
   # Other scopes may use custom stacks.
-  # scope "/api", HelloWeb do
-  #   pipe_through :api
-  # end
+#   scope "/api", HelloWeb do
+#     pipe_through :api
+#   end
 
   # Enables LiveDashboard only for development
   #
